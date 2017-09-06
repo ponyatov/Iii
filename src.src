@@ -1,0 +1,6 @@
+# comment
+core = [ ypp.ypp lpp.lpp hpp.hpp cpp.cpp ]
+files = [ src.src log.log core Makefile .gitignore rc.rc ]
+touch(files)
+
++001+-02.3*-4e+05/'string'
