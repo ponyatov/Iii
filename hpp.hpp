@@ -12,8 +12,9 @@
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
-#include <vector>
-#include <map>
+#include <vector>		// for nest[]ed
+#include <map>			// for attr[]ibutes
+#include <set>			// for dump() with infty recursion fix
 
 using namespace std;
 

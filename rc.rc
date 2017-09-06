@@ -1,2 +1,2 @@
 #!/bin/sh
-gvim -p src.src log.log ypp.ypp lpp.lpp hpp.hpp cpp.cpp Makefile .gitignore rc.rc
+gvim -p src.src log.log ypp.ypp lpp.lpp hpp.hpp cpp.cpp Makefile .gitignore rc.rc ftdetect.vim syntax.vim

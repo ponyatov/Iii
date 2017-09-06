@@ -17,11 +17,19 @@ Sym::~Sym(){/* does nothing */}
 Sym* Sym::push(Sym*o) { nest.push_back(o); return this; }
 Sym* Sym::set(string A,Sym*o) { attr[A]=o; return this; }
 
+set<Sym*> dump_used;
 string Sym::dump(int depth) {
-	string S = "\n"+pad(depth)+head();									// head
-	for (auto i=attr.begin(),e=attr.end();i!=e;i++)						// attr
+	// <header>
+	string S = "\n"+pad(depth)+head();
+	// infty recursion fix
+	if (depth==0) dump_used.clear();								// top clear
+	if (dump_used.find(this) != dump_used.end() ) return S+" ...";	// infty
+	dump_used.insert(this);											// save
+	// attr{}ibutes
+	for (auto i=attr.begin(),e=attr.end();i!=e;i++)
 		S += "\n"+pad(depth+1) + i->first + " =" + i->second->dump(depth+2);
-	for (auto j=nest.begin(),e=nest.end();j!=e;j++)						// nest
+	// nest[]ed
+	for (auto j=nest.begin(),e=nest.end();j!=e;j++)
 		S += (*j)->dump(depth+1);
 	return S; }
 string Sym::head() { ostringstream os;
@@ -49,6 +57,8 @@ string Vector::head() { ostringstream os; os<<"[] @"<<this; return os.str(); }
 Env::Env(string V):Sym("env",V) { next = NULL; }
 Env* env = NULL;
 void env_init() {
+	// self link
+	env->set("global",env);
 	// meta info
 	env->set("MODULE",new Str(MODULE));
 	env->set("TITLE",new Str(TITLE));
