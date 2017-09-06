@@ -39,7 +39,9 @@ Num::Num(int N):Sym("num","") { val = N; }
 string Num::head() { ostringstream os; os<<val<<" @"<<this; return os.str(); }
 
 Op::Op(string V):Sym("op",V){}
-Sym* Op::eval(Sym*E) { return this; }
+Sym* Op::eval(Sym*E) {
+	if (val=="=") { E->set(nest[0]->val,nest[1]); return nest[1]; }
+	return this; }
 
 Vector::Vector():Sym("vector",""){}
 string Vector::head() { ostringstream os; os<<"[] @"<<this; return os.str(); }
