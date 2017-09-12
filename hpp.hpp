@@ -31,10 +31,10 @@ struct Sym {							// === [sym]bol
 	string pad(int);						// left pad with tabs
 	virtual Sym* eval(Sym*);				// == evaluate in environment
 	Sym* next=NULL;							// ptr to next env in chain
-
+	virtual Sym* lookup(string);			// lookup over chained Env's
 };
 
-struct Env:Sym { Env(string); };			// environment {table}
+struct Env:Sym { Env(string,Env*); };		// environment {table}
 extern Env* env;							// global environment
 extern void env_init();						// init global env
 

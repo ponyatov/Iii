@@ -13,9 +13,11 @@
 %left PFX
 %%
 REPL : | REPL ex 		{ cout << $2->dump() << endl;
+						  cout << "----------------------" << endl;
 						  cout << $2->eval(env)->dump() << endl;
+						  cout << "----------------------" << endl;
 						  cout << env->dump() << endl ;
-						  cout << "==================" << endl; } ;
+						  cout << "===============================" << endl; } ;
 ex : SYM | NUM | STR ;
 ex : ex EQ ex			{ $$ = $2; $$->push($1); $$->push($3); } ;		// A=B
 ex : ex ADD ex			{ $$ = $2; $$->push($1); $$->push($3); } ;		// A+B

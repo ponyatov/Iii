@@ -2,7 +2,7 @@
 #define YYERR "\n\n"<<yylineno<<":"<<msg<<"["<<yytext<<"]\n\n"
 void yyerror(string msg) { cout<<YYERR; cerr<<YYERR; exit(-1); }
 int main(int argc, char *argv[], char *envp[]) {
-	env = new Env("global");					// create global env
+	env = new Env("global",NULL);				// create global en
 	Sym* V = new Vector(); env->set("argv",V);	// \ create argv[] vector
 	env->set("argc",new Num(argc));
 	for (int i=0;i<argc;i++)
@@ -37,7 +37,11 @@ string Sym::head() { ostringstream os;
 string Sym::pad(int n) { string S;
 	for (int i=0;i<n;i++) S += '\t'; return S; }
 
-Sym* Sym::eval(Sym*E) { return this; }
+Sym* Sym::lookup(string V) {
+	if (attr.count(V)) return attr[V]; else return NULL; }
+Sym* Sym::eval(Sym*E) {
+	Sym* S = E->lookup(val); if (S) return S;
+	return this; }
 
 Str::Str(string V):Sym("str",V){}
 string Str::head() { ostringstream os; os<<"'"<<val<<"' @"<<this; return os.str(); }
@@ -54,13 +58,13 @@ Sym* Op::eval(Sym*E) {
 Vector::Vector():Sym("vector",""){}
 string Vector::head() { ostringstream os; os<<"[] @"<<this; return os.str(); }
 
-Env::Env(string V):Sym("env",V) { next = NULL; }
+Env::Env(string V,Env*N):Sym("env",V) { next = N; }
 Env *env = NULL, *meta=NULL;
 void env_init() {
 	// self link
 	env->set("global",env);
 	// meta info
-	meta = new Env("meta"); env->set("meta",meta);
+	meta = new Env("meta",env); env->set("meta",meta);
 	meta->set("MODULE",new Str(MODULE));
 	meta->set("TITLE",new Str(TITLE));
 	meta->set("AUTHOR",new Str(AUTHOR));
