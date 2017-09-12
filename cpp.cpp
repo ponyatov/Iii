@@ -55,14 +55,15 @@ Vector::Vector():Sym("vector",""){}
 string Vector::head() { ostringstream os; os<<"[] @"<<this; return os.str(); }
 
 Env::Env(string V):Sym("env",V) { next = NULL; }
-Env* env = NULL;
+Env *env = NULL, *meta=NULL;
 void env_init() {
 	// self link
 	env->set("global",env);
 	// meta info
-	env->set("MODULE",new Str(MODULE));
-	env->set("TITLE",new Str(TITLE));
-	env->set("AUTHOR",new Str(AUTHOR));
-	env->set("LICENSE",new Str(LICENSE));
-	env->set("GITHUB",new Str(GITHUB));
+	meta = new Env("meta"); env->set("meta",meta);
+	meta->set("MODULE",new Str(MODULE));
+	meta->set("TITLE",new Str(TITLE));
+	meta->set("AUTHOR",new Str(AUTHOR));
+	meta->set("LICENSE",new Str(LICENSE));
+	meta->set("GITHUB",new Str(GITHUB));
 }
