@@ -40,7 +40,7 @@ extern void env_init();						// init global env
 
 struct Str:Sym { Str(string);				// string
 	string head(); };
-struct Num:Sym { Num(string); float val;	// number
+struct Num:Sym { Num(string); double val;	// number
 	Num(int); string head(); };
 
 struct Op:Sym { Op(string); 				// operator
