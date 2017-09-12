@@ -1,5 +1,6 @@
-argc
-noval
+A = 1
+B = A
+B = C
 
 # comment
 core = [ ypp.ypp lpp.lpp hpp.hpp cpp.cpp ]

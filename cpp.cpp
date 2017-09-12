@@ -41,6 +41,8 @@ Sym* Sym::lookup(string V) {
 	if (attr.count(V)) return attr[V]; else return NULL; }
 Sym* Sym::eval(Sym*E) {
 	Sym* S = E->lookup(val); if (S) return S;
+	for (auto it=nest.begin(),e=nest.end();it!=e;it++)	// loop over nest[]ed
+		*it = (*it)->eval(E);							// ALARM: MEMORY LEAK
 	return this; }
 
 Str::Str(string V):Sym("str",V){}
@@ -52,8 +54,11 @@ string Num::head() { ostringstream os; os<<val<<" @"<<this; return os.str(); }
 
 Op::Op(string V):Sym("op",V){}
 Sym* Op::eval(Sym*E) {
-	if (val=="=") { E->set(nest[0]->val,nest[1]); return nest[1]; }
-	return this; }
+	if (nest.size()==2) {
+		if (val=="=") {
+			Sym*R = nest[1]->eval(E); E->set(nest[0]->val,R); return R; }
+	}
+	return Sym::eval(E); }
 
 Vector::Vector():Sym("vector",""){}
 string Vector::head() { ostringstream os; os<<"[] @"<<this; return os.str(); }
